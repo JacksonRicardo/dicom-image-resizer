@@ -1,26 +1,17 @@
 import pydicom
-from aspose.imaging import Image, ResizeType
+from aspose.imaging import Image
 import os
 
 # Defina o diretório raiz onde estão os arquivos DICOM
-dicom_root_dir = r"C:\Users\jacks\Music\DICOM\Arquivo\997688EF\A02E06BE"
+dicom_root_dir = r"C:\Users\jacks\Music\DICOM2"
 output_root_dir = r"C:\Users\jacks\Music\DICOM_comprimido"
 
-obj_init = ["png", "bmp", "apng", "dicom", "jpg", "jp2", "j2k", "tga", "webp", "tiff", "gif"]
-resize_types = list(ResizeType)
-
-# Tamanho novo para o redimensionamento
-new_width = 1000
-new_height = 1000
-
-# Função para processar cada arquivo DICOM
-def process_dicom_file(input_file, output_file, resize_type):
+# Função para processar cada arquivo DICOM sem redimensionar
+def process_dicom_file(input_file, output_file):
     try:
         # Carrega a imagem a partir do arquivo DICOM
         with Image.load(input_file) as image:
-            # Redimensiona a imagem
-            image.resize(new_width, new_height, resize_type)
-            # Salva a imagem redimensionada no caminho de saída especificado
+            # Apenas salva a imagem no formato desejado sem redimensionar
             image.save(output_file)
             print(f"O arquivo foi salvo {output_file} com sucesso!")
     except Exception as e:
@@ -45,9 +36,7 @@ for root, dirs, files in os.walk(dicom_root_dir):
             # Nome do arquivo de saída para o arquivo comprimido
             output_file = os.path.join(output_root_dir, f"{file}")
             
-            # Itera pelos tipos de redimensionamento (usando o índice i)
-            for i, resize_type in enumerate(resize_types):
-                try:
-                    process_dicom_file(input_file, output_file, resize_type)
-                except Exception as e:
-                    print(f"Erro ao processar o arquivo {input_file}: {e}")
+            try:
+                process_dicom_file(input_file, output_file)
+            except Exception as e:
+                print(f"Erro ao processar o arquivo {input_file}: {e}")
