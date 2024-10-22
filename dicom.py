@@ -3,7 +3,7 @@ from aspose.imaging import Image
 import os
 
 # Defina o diretório raiz onde estão os arquivos DICOM
-dicom_root_dir = r"C:\Users\jacks\Music\DICOM2"
+dicom_root_dir = r"C:\Users\jacks\Music\DICOM\997688AE"
 output_root_dir = r"C:\Users\jacks\Music\DICOM_comprimido"
 
 # Função para processar cada arquivo DICOM sem redimensionar
@@ -33,8 +33,13 @@ for root, dirs, files in os.walk(dicom_root_dir):
         
         # Verifica se o arquivo é um arquivo DICOM
         if file.lower().endswith('.dcm') or is_dicom_file(input_file):
+            # Cria o caminho do diretório de saída correspondente
+            relative_path = os.path.relpath(root, dicom_root_dir)
+            output_dir = os.path.join(output_root_dir, relative_path)
+            os.makedirs(output_dir, exist_ok=True)
+            
             # Nome do arquivo de saída para o arquivo comprimido
-            output_file = os.path.join(output_root_dir, f"{file}")
+            output_file = os.path.join(output_dir, file)
             
             try:
                 process_dicom_file(input_file, output_file)
